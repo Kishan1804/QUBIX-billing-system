@@ -3,7 +3,7 @@ import { transporter } from './transporter.js'
 export const sendMail = async ({ to, subject, html }) => {
     try {
         const mailOptions = {
-            from: `"MERN Billing" <${process.env.EMAIL}>`,
+            from: `"QUBIX Billing" <${process.env.EMAIL}>`,
             to,
             subject,
             html,

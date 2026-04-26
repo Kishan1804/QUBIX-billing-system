@@ -22,7 +22,7 @@ const createContact = asyncHandler(async (req, res) => {
 
     await sendMail({
         to: email,
-        subject: "Support request received - MERN Billing",
+        subject: "Support request received - QUBIX Billing",
         html: contactConfirmationTemplate(fullName, message)
     })
 

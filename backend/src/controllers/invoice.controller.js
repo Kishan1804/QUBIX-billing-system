@@ -6,6 +6,7 @@ import { Product } from "../models/product.model.js";
 import { Invoice } from "../models/invoice.model.js";
 import path from 'path';
 import PDFDocument from 'pdfkit';
+import { fileURLToPath } from "url";
 
 const formatCurrency = (num) => `₹${num.toLocaleString("en-IN")}`
 
@@ -287,7 +288,10 @@ const viewInvoicePDF = asyncHandler(async (req, res) => {
 
     const doc = new PDFDocument({ size: "A4", margin: 50 })
 
-    const fontPath = path.join(process.cwd(), "src", "fonts", "Roboto-Regular.ttf")
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
+
+    const fontPath = path.join(__dirname, "..", "fonts", "Roboto-Regular.ttf")
     doc.font(fontPath)
 
     res.setHeader("Content-Type", "application/pdf")
@@ -325,7 +329,10 @@ const downloadInvoicePDF = asyncHandler(async (req, res) => {
 
     const doc = new PDFDocument({ size: "A4", margin: 50 })
 
-    const fontPath = path.join(process.cwd(), "src", "fonts", "Roboto-Regular.ttf")
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
+
+    const fontPath = path.join(__dirname, "..", "fonts", "Roboto-Regular.ttf")
     doc.font(fontPath)
 
     res.setHeader("Content-Type", "application/pdf")

@@ -18,7 +18,7 @@ export const resetOtpTemplate = (name, otp) => {
 
       <p>This OTP will expire in 10 minutes.</p>
 
-      <p>MERN Billing Team</p>
+      <p>QUBIX Billing Team</p>
     </div>
   `;
 };
@@ -31,7 +31,7 @@ export const contactConfirmationTemplate = (name, message) => {
 
       <p>Hello ${name},</p>
 
-      <p>Thank you for contacting MERN Billing support.</p>
+      <p>Thank you for contacting QUBIX Billing support.</p>
 
       <p>Your message:</p>
 
@@ -45,7 +45,7 @@ export const contactConfirmationTemplate = (name, message) => {
 
       <p>Our team will contact you soon.</p>
 
-      <p>Regards,<br/>MERN Billing</p>
+      <p>Regards,<br/>QUBIX Billing</p>
     </div>
   `;
 };
