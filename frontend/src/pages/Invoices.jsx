@@ -24,17 +24,17 @@ const Invoices = () => {
         navigate(`/invoices/${id}`)
     }
 
-    const viewPDF = (id) => {
-        const API = import.meta.env.VITE_REACT_BASEURL
+    const API = import.meta.env.VITE_API_BASE_URL
 
-        window.open(`${API}/api/v1/invoices/view-pdf/${id}`, "_blank")
+    const viewPDF = (id) => {
+        window.open(`${API}/invoices/view-pdf/${id}`, "_blank")
+
     }
 
     const downloadPDF = (id, invNo) => {
-        const API = import.meta.env.VITE_REACT_BASEURL
         const link = document.createElement("a")
 
-        link.href = `${API}/api/v1/invoices/download-pdf/${id}`
+        link.href = `${API}/invoices/download-pdf/${id}`
         link.download = `invoice-${invNo}.pdf`
 
         document.body.appendChild(link)
