@@ -9,21 +9,16 @@ const allowedOrigins = [
     "https://qubix-billing-system.vercel.app"
 ]
 
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true)
-        } else {
-            callback(null, false)
-        }
-    },
-    credentials: true
-}))
-
-app.options('*', cors({
+const corsOptions = {
     origin: allowedOrigins,
-    credentials: true
-}))
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}
+
+app.use(cors(corsOptions))
+
+app.options('*', cors(corsOptions))
 
 app.use(express.json({ limit: "16kb" }))
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
