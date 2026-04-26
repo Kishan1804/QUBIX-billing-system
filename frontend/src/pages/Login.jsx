@@ -25,7 +25,7 @@ const Login = () => {
             toast.success("Login successful")
             navigate('/dashboard')
         } catch (err) {
-            toast.error(err.response?.data?.message || "User Logged in")
+            toast.error(err.response?.data?.message || "Server Error")
         } finally {
             setLoading(false)
         }

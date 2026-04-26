@@ -13,7 +13,7 @@ export const logoutUser = () => {
 }
 
 export const getProfile = () => {
-    return api.get("/auth/profile")
+    return api.get("/users/profile")
 }
 
 export const getUsers = () => {

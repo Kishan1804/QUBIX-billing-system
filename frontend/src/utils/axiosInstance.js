@@ -15,7 +15,7 @@ axiosInstance.interceptors.response.use(
             originalRequest._retry = true
 
             try {
-                await axiosInstance.post("/users/refresh-token",)
+                await axiosInstance.post("/users/refresh-token", {})
                 return axiosInstance(originalRequest)
                 
             } catch (err) {
