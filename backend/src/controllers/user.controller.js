@@ -80,7 +80,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: "none"
     }
 
     return res
@@ -111,7 +112,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: "none"
     }
 
     return res
@@ -145,10 +147,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            sameSite: "none"
         }
 
-        const { accessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user._id)
+        const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshTokens(user._id)
 
         return res
             .status(200)
@@ -210,11 +213,11 @@ const updateUser = asyncHandler(async (req, res) => {
         throw new ApiError(404, "User not found")
     }
 
-    if(firstName !== undefined) user.firstName = firstName
-    if(lastName !== undefined) user.lastName = lastName
-    if(email !== undefined) user.email = email
-    if(number !== undefined) user.number = number
-    if(role !== undefined) user.role = role
+    if (firstName !== undefined) user.firstName = firstName
+    if (lastName !== undefined) user.lastName = lastName
+    if (email !== undefined) user.email = email
+    if (number !== undefined) user.number = number
+    if (role !== undefined) user.role = role
 
     await user.save()
 
@@ -230,7 +233,7 @@ const updateUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id).select("-password -refreshToken")
 
-    if(!user) {
+    if (!user) {
         throw new ApiError(404, "User not found")
     }
 

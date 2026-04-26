@@ -4,8 +4,24 @@ import cookieParser from 'cookie-parser';
 
 const app = express()
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://qubix-billing-system.vercel.app"
+]
+
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(null, false)
+        }
+    },
+    credentials: true
+}))
+
+app.options('*', cors({
+    origin: allowedOrigins,
     credentials: true
 }))
 
