@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api/v1",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     withCredentials: true,
 })
 
@@ -15,13 +15,9 @@ axiosInstance.interceptors.response.use(
             originalRequest._retry = true
 
             try {
-                await axios.post(
-                    "http://localhost:8000/api/v1/users/refresh-token",
-                    {},
-                    { withCredentials: true }
-                )
-
+                await axiosInstance.post("/users/refresh-token",)
                 return axiosInstance(originalRequest)
+                
             } catch (err) {
                 return Promise.reject(err)
             }
