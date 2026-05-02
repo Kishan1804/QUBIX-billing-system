@@ -27,3 +27,11 @@ export const updateUser = (id, data) => {
 export const deleteUser = (id) => {
     return api.delete(`/users/delete/${id}`)
 }
+
+export const sendOtp = (email) => {
+    return api.post('/users/send-otp', email)
+}
+
+export const resetPassword = (email, otp, password) => {
+    return api.post('/users/reset-password', email, otp, password)
+}

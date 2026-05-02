@@ -17,6 +17,7 @@ import Contact from '../pages/Contact'
 import ManageContact from '../pages/ManageContact'
 import Report from '../pages/Report'
 import Profile from '../pages/Profile'
+import ForgetPassword from '../pages/ForgetPassword'
 
 
 const RoutesConfig = () => {
@@ -27,6 +28,7 @@ const RoutesConfig = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/signup' element={<Signup />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/login/reset-password' element={<ForgetPassword />} />
 
                 {/* Protected */}
                 <Route element={<ProtectedRoute />} >

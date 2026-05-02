@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import { sendMail } from "../utils/mail/sendMail.js";
+import { resetOtpTemplate } from "../utils/mail/templates.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -246,6 +248,74 @@ const getUserProfile = asyncHandler(async (req, res) => {
     )
 })
 
+const sendOtp = asyncHandler(async (req, res) => {
+    const { email } = req.body
+
+    if (!email) {
+        throw new ApiError(400, "Email is required")
+    }
+
+    const user = await User.findOne({ email })
+
+    if (!user) {
+        throw new ApiError(404, "User not found")
+    }
+
+    if (user.otpExpire && user.otpExpire > Date.now()) {
+        throw new ApiError(429, "OTP already sent. Try again later")
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString()
+
+    user.resetOtp = otp
+    user.otpExpire = Date.now() + 10 * 60 * 1000
+
+    await user.save({ validateBeforeSave: false })
+
+    await sendMail({
+        to: email,
+        subject: "Password Reset OTP - QUBIX Billing",
+        html: resetOtpTemplate(user.firstName, otp)
+    })
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "OTP sent successfully")
+    )
+})
+
+const resetPassword = asyncHandler(async (req, res) => {
+    const { email, otp, password } = req.body
+
+    if (!email || !otp || !password) {
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const user = await User.findOne({ email })
+
+    if (!user) {
+        throw new ApiError(404, "User not found")
+    }
+
+    if (!user.otpExpire || user.otpExpire < Date.now()) {
+        throw new ApiError(400, "OTP Expired")
+    }
+
+    if(user.resetOtp !== otp) {
+        throw new ApiError(400, "Invalid OTP")
+    }
+
+    user.password = password
+
+    user.resetOtp = null
+    user.otpExpire = null
+
+    await user.save()
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Password reset successfully")
+    )
+})
+
 export {
     registerUser,
     loginUser,
@@ -254,5 +324,7 @@ export {
     getUserList,
     deleteUser,
     updateUser,
-    getUserProfile
+    getUserProfile,
+    sendOtp,
+    resetPassword
 }
