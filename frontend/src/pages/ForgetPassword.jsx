@@ -17,30 +17,31 @@ const ForgetPassword = () => {
     const handleSendOtp = async (e) => {
         e.preventDefault()
         setLoading(true)
-        try{
-            const {data} = await sendOtp(email)
+        try {
+            const { data } = await sendOtp(email)
             toast.success("Otp send successfully")
             setStep(2)
         }
-        catch(err) {
+        catch (err) {
             console.log(err)
             toast.error(err.response?.data?.message || "Server Error")
         }
-        finally{
+        finally {
             setLoading(false)
         }
     }
     const handleResetPassword = async (e) => {
         e.preventDefault()
         setLoading(true)
-        try{
-            const {data} = await resetPassword(email, otp, password)
+        try {
+            const { data } = await resetPassword(email, otp, password)
             toast.success(data.message || "Password reset successfully")
+            navigate('/login')
         }
-        catch(err) {
+        catch (err) {
             toast.error(err.response?.data?.message || "Server Error")
         }
-        finally{
+        finally {
             setLoading(false)
         }
     }
