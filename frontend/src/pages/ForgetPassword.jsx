@@ -4,7 +4,7 @@ import Input from '../components/common/Input'
 import { Lock, LogIn, Mail } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { sendOtp } from '../services/userService'
+import { resetPassword, sendOtp } from '../services/userService'
 
 const ForgetPassword = () => {
     const navigate = useNavigate()
@@ -23,6 +23,7 @@ const ForgetPassword = () => {
             setStep(2)
         }
         catch(err) {
+            console.log(err)
             toast.error(err.response?.data?.message || "Server Error")
         }
         finally{

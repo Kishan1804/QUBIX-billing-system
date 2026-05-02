@@ -5,21 +5,31 @@ const axiosInstance = axios.create({
     withCredentials: true,
 })
 
+const PUBLIC_ROUTES = [
+    "/users/login",
+    "/users/register",
+    "/users/send-otp",
+    "/users/reset-password",
+    "/users/refresh-token",
+]
+
 axiosInstance.interceptors.response.use(
     (response) => response,
 
     async (error) => {
         const originalRequest = error.config
 
-        if(window.location.pathname === '/login') {
+        if (PUBLIC_ROUTES.some(route => originalRequest.url.includes(route))) {
+            return Promise.reject(error)
+        }
+
+        if (!document.cookie.includes("refreshToken")) {
             return Promise.reject(error)
         }
 
         if (
             error.response?.status === 401 &&
-            !originalRequest._retry &&
-            !originalRequest.url.includes("/login") &&
-            !originalRequest.url.includes("/refresh-token")
+            !originalRequest._retry
         ) {
             originalRequest._retry = true
 
@@ -28,7 +38,6 @@ axiosInstance.interceptors.response.use(
                 return axiosInstance(originalRequest)
 
             } catch (err) {
-                window.location.href = "/login"
                 return Promise.reject(err)
             }
         }

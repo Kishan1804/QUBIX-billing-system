@@ -10,9 +10,9 @@ router.route("/login").post(loginUser)
 
 router.route("/refresh-token").post(refreshAccessToken)
 
-router.route("/send-otp").post(verifyJWT, sendOtp)
+router.route("/send-otp").post(sendOtp)
 
-router.route("/reset-password").delete(verifyJWT, resetPassword)
+router.route("/reset-password").post(resetPassword)
 
 // PROTECTED ROUTES
 router.route("/logout").post(verifyJWT, logoutUser)
